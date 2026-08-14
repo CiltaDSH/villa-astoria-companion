@@ -1,0 +1,9 @@
+{
+  "name": "Villa Astoria Kefalonia Guest Companion",
+  "short_name": "Villa Astoria",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7fafb",
+  "theme_color": "#0b6e8e"
+}
