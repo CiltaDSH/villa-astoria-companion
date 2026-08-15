@@ -1,0 +1,1 @@
+(()=>{const p=location.pathname.split('/').pop()||'index.html';if(p!=='dining.html'&&p!=='destinations.html')return;const s=document.createElement('script');s.src='./distance-polish.js';s.defer=true;document.head.appendChild(s)})();
