@@ -1,0 +1,23 @@
+name: Apply winery distance badges
+on:
+  push:
+    branches: [agent/navigation-link-audit]
+    paths:
+      - scripts/add-winery-distances.py
+      - .github/workflows/apply-winery-distances.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/navigation-link-audit
+      - run: python scripts/add-winery-distances.py
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dining.html
+          if git diff --cached --quiet; then echo "No changes"; else git commit -m "Add missing winery Villa distances" && git push origin HEAD:agent/navigation-link-audit; fi
