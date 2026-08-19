@@ -1,0 +1,39 @@
+name: Apply remaining Dining distance badges
+on:
+  push:
+    branches: [agent/navigation-link-audit]
+    paths:
+      - .github/workflows/apply-remaining-dining-distances.yml
+      - scripts/add-remaining-dining-distances.py
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/navigation-link-audit
+      - name: Apply remaining Dining distances
+        run: python scripts/add-remaining-dining-distances.py
+      - name: Verify required cards
+        run: |
+          grep -F 'Bee’s Knees / Ypsilon' dining.html
+          grep -F 'The Vine / Baroque' dining.html
+          grep -F 'Sarris + Avithos dinner' dining.html
+          grep -F 'Haritatos food & wine experience' dining.html
+          grep -F 'Alaties sunset + Alati dinner' dining.html
+          grep -F 'To Enetiko' dining.html
+          grep -F 'Sclavos Wines' dining.html
+      - name: Commit result
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dining.html
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "Complete Dining Villa distance badges"
+            git push origin HEAD:agent/navigation-link-audit
+          fi
